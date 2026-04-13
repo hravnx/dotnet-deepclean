@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/app/">
+    <Project Path="src/app/Ravn.Dotnet.Clean.fsproj" />
+  </Folder>
+</Solution>
