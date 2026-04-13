@@ -7,7 +7,7 @@
     <PackAsTool>true</PackAsTool>
     <PackageId>Ravn.Dotnet.DeepClean</PackageId>
     <ToolCommandName>dotnet-deepclean</ToolCommandName>
-    <PackageVersion>0.1.0</PackageVersion>
+    <PackageVersion>0.2.0</PackageVersion>
     <Authors>Henrik Ravn</Authors>
     <Description>Command-line tool for really cleaning .NET project directories.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

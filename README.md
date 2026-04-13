@@ -16,6 +16,9 @@ its subdirectories. Note that it will only remove these folders if they are in a
 .NET project root, i.e a directory that contains a `.csproj`, `.fsproj`, or
 `.vbproj` file.
 
+After cleanup completes, the tool runs `dotnet restore` for each solution file
+(`.sln` or `.slnx`) found in the current directory.
+
 # Installation
 
 You can install Dotnet DeepClean as a global tool using the following command:
