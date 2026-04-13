@@ -48,12 +48,24 @@ let restoreSolution (solutionPath: string) : int =
                     FileName = "dotnet",
                     Arguments = $"restore \"{solutionPath}\"",
                     WorkingDirectory = Path.GetDirectoryName(solutionPath),
-                    UseShellExecute = false
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
                 )
         )
 
     restoreProcess.Start() |> ignore
+    let standardOutput = restoreProcess.StandardOutput.ReadToEnd()
+    let standardError = restoreProcess.StandardError.ReadToEnd()
     restoreProcess.WaitForExit()
+
+    if restoreProcess.ExitCode <> 0 then
+        if not (System.String.IsNullOrWhiteSpace(standardOutput)) then
+            printf "%s" standardOutput
+
+        if not (System.String.IsNullOrWhiteSpace(standardError)) then
+            eprintf "%s" standardError
+
     restoreProcess.ExitCode
 
 let restoreSolutions (rootPath: string) : int =
