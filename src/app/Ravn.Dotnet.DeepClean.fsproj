@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <AssemblyName>DeepClean</AssemblyName>
     <OutputType>Exe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
     <PackAsTool>true</PackAsTool>
-    <PackageId>Ravn.Dotnet.SuperClean</PackageId>
-    <ToolCommandName>dotnet-super-clean</ToolCommandName>
+    <PackageId>Ravn.Dotnet.DeepClean</PackageId>
+    <ToolCommandName>dotnet-deepclean</ToolCommandName>
     <PackageVersion>0.1.0</PackageVersion>
     <Authors>Henrik Ravn</Authors>
     <Description>Command-line tool for really cleaning .NET project directories.</Description>
