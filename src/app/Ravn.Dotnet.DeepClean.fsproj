@@ -7,7 +7,8 @@
     <PackAsTool>true</PackAsTool>
     <PackageId>Ravn.Dotnet.DeepClean</PackageId>
     <ToolCommandName>dotnet-deepclean</ToolCommandName>
-    <PackageVersion>0.2.0</PackageVersion>
+    <Version>0.2.0</Version>
+    <PackageVersion>$(Version)</PackageVersion>
     <Authors>Henrik Ravn</Authors>
     <Description>Command-line tool for really cleaning .NET project directories.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -19,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Argu" Version="6.2.5" />
     <None Include="../../README.md" Pack="true" PackagePath="\" Link="README.md" />
   </ItemGroup>
 

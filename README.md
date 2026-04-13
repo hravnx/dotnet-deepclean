@@ -19,6 +19,12 @@ its subdirectories. Note that it will only remove these folders if they are in a
 After cleanup completes, the tool runs `dotnet restore` for each solution file
 (`.sln` or `.slnx`) found in the current directory.
 
+To print the installed tool version, run:
+
+```bash
+dotnet deepclean --version
+```
+
 # Installation
 
 You can install Dotnet DeepClean as a global tool using the following command:

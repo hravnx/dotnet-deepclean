@@ -1,9 +1,44 @@
-﻿open System.Diagnostics
+﻿open Argu
+open System
+open System.Diagnostics
 open System.IO
+open System.Reflection
 
 let private dotnetProjectExtensions = set [ ".csproj"; ".fsproj"; ".vbproj" ]
 let private solutionFileExtensions = set [ ".sln"; ".slnx" ]
 let private buildArtifactDirectories = [ "bin"; "obj" ]
+
+type CliArguments =
+    | [<AltCommandLine("-V")>] Version
+
+    interface IArgParserTemplate with
+        member this.Usage =
+            match this with
+            | Version -> "print the tool version."
+
+type ConsoleExiter() =
+    let writeColoredLine color (message: string) =
+        let originalColor = Console.ForegroundColor
+        Console.ForegroundColor <- color
+
+        try
+            Console.Error.WriteLine(message)
+        finally
+            Console.ForegroundColor <- originalColor
+
+    interface IExiter with
+        member _.Name = "console"
+
+        member _.Exit(msg, errorCode) =
+            match errorCode with
+            | ErrorCode.HelpText ->
+                Console.WriteLine(msg)
+                Environment.Exit(0)
+                Unchecked.defaultof<'T>
+            | _ ->
+                writeColoredLine ConsoleColor.Red msg
+                Environment.Exit(1)
+                Unchecked.defaultof<'T>
 
 let findProjectDirectories (rootPath: string) : seq<string> = seq {
     for directory in Directory.EnumerateDirectories(rootPath, "*", SearchOption.AllDirectories) do
@@ -74,13 +109,20 @@ let restoreSolutions (rootPath: string) : int =
     |> Seq.tryFind ((<>) 0)
     |> Option.defaultValue 0
 
-[<EntryPoint>]
-let main _ =
-    let currentDirectory = Directory.GetCurrentDirectory()
+let getToolVersion () : string =
+    let entryAssembly = Assembly.GetEntryAssembly()
 
+    let informationalVersion =
+        entryAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+
+    if isNull informationalVersion then
+        entryAssembly.GetName().Version.ToString()
+    else
+        informationalVersion.InformationalVersion.Split('+')[0]
+
+let runDeepClean (currentDirectory: string) : int =
     let removedFolderCount =
-        findProjectDirectories currentDirectory
-        |> Seq.sumBy deepClean
+        findProjectDirectories currentDirectory |> Seq.sumBy deepClean
 
     printfn "Removed %d folders." removedFolderCount
 
@@ -88,3 +130,19 @@ let main _ =
         restoreSolutions currentDirectory
     else
         0
+
+[<EntryPoint>]
+let main argv =
+    let parser =
+        ArgumentParser.Create<CliArguments>(
+            programName = "dotnet-deepclean",
+            errorHandler = ConsoleExiter()
+        )
+
+    let results = parser.ParseCommandLine argv
+
+    if results.Contains Version then
+        printfn "%s" (getToolVersion ())
+        0
+    else
+        runDeepClean (Directory.GetCurrentDirectory())
