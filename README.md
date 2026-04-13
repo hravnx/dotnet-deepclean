@@ -19,6 +19,12 @@ its subdirectories. Note that it will only remove these folders if they are in a
 After cleanup completes, the tool runs `dotnet restore` for each solution file
 (`.sln` or `.slnx`) found in the current directory.
 
+To skip the final restore step, run:
+
+```bash
+dotnet deepclean --skip-restore
+```
+
 To print the installed tool version, run:
 
 ```bash

@@ -9,6 +9,11 @@ let private dotnetProjectExtensions = set [ ".csproj"; ".fsproj"; ".vbproj" ]
 let private solutionFileExtensions = set [ ".sln"; ".slnx" ]
 let private buildArtifactDirectories = [ "bin"; "obj" ]
 
+type RunOptions = {
+    CurrentDirectory: string
+    SkipRestore: bool
+}
+
 let private findProjectDirectories (rootPath: string) : seq<string> = seq {
     for directory in Directory.EnumerateDirectories(rootPath, "*", SearchOption.AllDirectories) do
         let containsProjectFile =
@@ -89,13 +94,13 @@ let getToolVersion () : string =
     else
         informationalVersion.InformationalVersion.Split('+')[0]
 
-let run (currentDirectory: string) : int =
+let run (options: RunOptions) : int =
     let removedFolderCount =
-        findProjectDirectories currentDirectory |> Seq.sumBy deepClean
+        findProjectDirectories options.CurrentDirectory |> Seq.sumBy deepClean
 
     printfn "Removed %d folders." removedFolderCount
 
-    if removedFolderCount > 0 then
-        restoreSolutions currentDirectory
+    if removedFolderCount > 0 && not options.SkipRestore then
+        restoreSolutions options.CurrentDirectory
     else
         0

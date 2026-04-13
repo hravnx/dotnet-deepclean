@@ -4,11 +4,13 @@ open System.IO
 
 type CliArguments =
     | [<AltCommandLine("-V")>] Version
+    | Skip_Restore
 
     interface IArgParserTemplate with
         member this.Usage =
             match this with
             | Version -> "print the tool version."
+            | Skip_Restore -> "skip the final dotnet restore step."
 
 [<EntryPoint>]
 let main argv =
@@ -29,4 +31,7 @@ let main argv =
         printfn "dotnet-deepclean %s" (DeepClean.getToolVersion ())
         0
     else
-        DeepClean.run (Directory.GetCurrentDirectory())
+        DeepClean.run {
+            CurrentDirectory = Directory.GetCurrentDirectory()
+            SkipRestore = results.Contains Skip_Restore
+        }
