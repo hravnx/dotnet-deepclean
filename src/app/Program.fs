@@ -16,20 +16,26 @@ let findProjectDirectories (rootPath: string) : seq<string> = seq {
             yield directory
 }
 
-let deepClean (projectPath: string) : unit =
+let deepClean (projectPath: string) : int =
     buildArtifactDirectories
-    |> List.iter (fun directoryName ->
+    |> List.sumBy (fun directoryName ->
         let directoryPath = Path.Combine(projectPath, directoryName)
 
         if Directory.Exists(directoryPath) then
             Directory.Delete(directoryPath, true)
+            1
+        else
+            0
     )
 
 [<EntryPoint>]
 let main _ =
     let currentDirectory = Directory.GetCurrentDirectory()
 
-    findProjectDirectories currentDirectory
-    |> Seq.iter deepClean
+    let removedFolderCount =
+        findProjectDirectories currentDirectory
+        |> Seq.sumBy deepClean
+
+    printfn "Removed %d folders." removedFolderCount
 
     0
