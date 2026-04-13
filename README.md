@@ -4,6 +4,14 @@ A simple tool to clean up .NET projects by removing unnecessary files and
 folders, such as `bin`, `obj`, and `packages`. This can help free up disk space
 and improve performance when working with large projects.
 
+# Installation
+
+You can install Dotnet DeepClean as a global tool using the following command:
+
+```bash
+dotnet tool install -g dotnet-deepclean
+```
+
 # Usage
 To use Dotnet DeepClean, simply run the following command in your terminal:
 
@@ -31,9 +39,6 @@ To print the installed tool version, run:
 dotnet deepclean --version
 ```
 
-# Installation
+# License
 
-You can install Dotnet DeepClean as a global tool using the following command:
-```bash
-dotnet tool install -g dotnet-deepclean
-```
+This project is licensed under the MIT License.
