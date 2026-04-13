@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="DeepClean.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
