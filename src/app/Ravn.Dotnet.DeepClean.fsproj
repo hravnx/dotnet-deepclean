@@ -16,6 +16,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Cleanup.fs" />
+    <Compile Include="Restore.fs" />
     <Compile Include="DeepClean.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

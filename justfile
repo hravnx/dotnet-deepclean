@@ -2,6 +2,9 @@
 build:
     dotnet build -c Release
 
+test:
+    dotnet fsi --exec tests/Tests.fsx
+
 pack: build
     dotnet pack src/app/Ravn.Dotnet.DeepClean.fsproj
 
